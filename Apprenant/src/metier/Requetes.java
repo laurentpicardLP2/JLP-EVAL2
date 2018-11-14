@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import connection.AccesBD;
 import model.Apprenant;
@@ -26,6 +27,68 @@ public class Requetes {
 		return apprenants;
 		
 	}
+	
+	
+	/*public static HashMap<String, ArrayList<Apprenant>> apprenantsByArea() throws ClassNotFoundException, SQLException {
+		
+		return
+	}*/
+	
+public static HashMap<String, ArrayList<Apprenant>> apprenantsByArea() throws ClassNotFoundException, SQLException {
+	HashMap<String, ArrayList<Apprenant>> listeApprenantByArea = new HashMap<String, ArrayList<Apprenant>>();
+	
+	String requete	= "SELECT distinct COUNT(id_region) from region";
+	ResultSet rs = AccesBD.executerQuery(requete);
+	PreparedStatement prepareStatement;
+	String region;
+	ArrayList<Apprenant> apprenants = new ArrayList<Apprenant>();
+	
+	rs.next();
+	int nbRegion = rs.getInt(1);
+	
+	for (int i = 0; i<nbRegion; i++) {
+		apprenants.clear();
+		prepareStatement = AccesBD.getConnection()
+				.prepareStatement("SELECT nom_region from region WHERE id_region=?");
+		prepareStatement.setInt(1, (i+1));
+		rs = prepareStatement.executeQuery();
+		rs.next();
+		region = rs.getString("nom_region");
+		//System.out.println(region);
+		
+		
+		prepareStatement = AccesBD.getConnection()
+				.prepareStatement("SELECT id_apprenant, prenom, nom, dateNaissance, email, photo, apprenant.id_region, region.id_region, nom_region from apprenant JOIN region ON region.id_region = apprenant.id_region WHERE region.nom_region=?");
+		prepareStatement.setString(1, region);
+		//System.out.println(region);
+		rs = prepareStatement.executeQuery();
+		
+		prepareStatement.clearParameters();
+		
+		while (rs.next()) {
+			Apprenant p = Mapping.mapperApprenant(rs);
+			apprenants.add(p);
+            //int id_apprenant = rs.getInt("id_apprenant");
+            //String userid = rs.getString("id_apprenant");
+            
+
+           //System.out.println("userid : " + id_apprenant);
+            //System.out.println("username : " + username);
+
+        }
+		
+		listeApprenantByArea.put(region, apprenants);
+		System.out.println(apprenants);
+		
+		
+		//Apprenant p = Mapping.mapperApprenant(resultat);
+		//System.out.println(p);
+	
+		
+	}
+	return listeApprenantByArea;
+	
+}
 		
 
 
