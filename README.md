@@ -6,5 +6,5 @@
 
 ## Visualisation du MCD
 
-![image](nodejsDownload.png)
+![image](Apprenant/src/ressources/MCD_bd_apprenant.png)
 
