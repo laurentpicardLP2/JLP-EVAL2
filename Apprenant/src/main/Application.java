@@ -1,12 +1,8 @@
 package main;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
 
-import model.Apprenant;
+import menu.Menu;
 import metier.Requetes;
 
 public class Application {
@@ -15,12 +11,33 @@ public class Application {
 		// TODO Auto-generated method stub
 		try {
 			
-			/*scanner = new Scanner(System.in);
-			System.out.print("Saisir un chiffre : ");
-			String saisie = scanner.nextLine();
-			if(saisie.matches("[0-3]")) {
-				int choix = Integer.parseInt(saisie);
-				System.out.println(choix);*/
+			int choix;
+			do {
+				choix = Menu.showMenu();
+				switch (choix) {
+				case 1 : Requetes.getAllApprenants();
+					break;
+				case 2 : Requetes.apprenantsByArea();
+					break;
+				case 3 : Requetes.ListeActiviteForApprenant();
+					break;
+				case 4 : Requetes.ListeApprenantDoActivite();
+					break;
+				case 5 : Requetes.AddApprenant();
+					break;
+				case 6 : Requetes.AddCaresser();
+					break;
+				case 7 : Requetes.ListeActivitesNull();
+					break;
+				case 8 : Requetes.getAllApprenants();
+					break;
+				case 9 : Requetes.getAllApprenants();
+					break;
+				case 10 : Requetes.initilialiseBase();
+					break;
+					default : break;
+				}
+			}while(choix!=11);
 			
 			//Requete pour initialiser les tables de la bd
 			//Requetes.initilialiseBase();
@@ -33,9 +50,12 @@ public class Application {
 			//Requetes.apprenantsByArea();
 			
 			//Recherchez un apprenant(e) (par son nom) et afficher la liste des activités qu’il ou qu’elle pratique.
-			Requetes.ListeActiviteForApprenant();
+			//Requetes.ListeActiviteForApprenant();
 			
-			//Read : Ecrire une requête qui permet d’afficher la liste des activités que personne ne fait.
+			//Recherchez les apprenants qui pratiquent une activité passée en paramètre d’une méthode..
+			//Requetes.ListeApprenantDoActivite();
+			
+			//Read : Ecrire une requête qui permet d’afficher la liste des activités que personne ne fait.7
 			//SELECT nom_activite FROM activite LEFT JOIN peutavoir ON peutavoir.id_activite = activite.id_activite WHERE peutavoir.id_activite IS NULL;
 			
 			

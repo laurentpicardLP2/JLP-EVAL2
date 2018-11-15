@@ -17,6 +17,15 @@ public class Apprenant {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Apprenant(String nom, String prenom, Date date, String email, int id_region) {
+		super();
+		this.nom = nom;
+		this.prenom = prenom;
+		this.date = date;
+		this.id_region = id_region;
+		this.email = email;
+	}
 
 
 	public Apprenant(int id_apprenant, String nom, String prenom, Date date, int id_region, String email, Object photo) {
