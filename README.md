@@ -8,5 +8,6 @@
 ![image](JLP-EVAL2/Apprenant/src/ressources/MCD_bd_apprenant.png)
 
 ## Visualisation des packages du dossier
-![image](JLP-EVAL2/Apprenant/src/ressources/package_bd_apprenant.png)
+![image](JLP-EVAL2/Apprenant/src/ressources/package_bd_apprenant.PNG)
 
+      
