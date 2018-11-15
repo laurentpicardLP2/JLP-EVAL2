@@ -1,18 +1,17 @@
 package metier;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 
 import connection.AccesBD;
 import model.Activite;
 import model.Apprenant;
+import model.PeutAvoir;
 import model.Region;
 
 public class Requetes {
@@ -274,11 +273,53 @@ public static void AddCaresser() throws ClassNotFoundException, SQLException {
 	String requete	= "SELECT MAX(id_apprenant) FROM apprenant";
 	ResultSet rs = AccesBD.executerQuery(requete);
 	PreparedStatement prepareStatement;
-	
+	PeutAvoir peutavoir;
 	rs.next();
 	int id_apprenant = rs.getInt(1);
-	System.out.println(id_apprenant);
 	
+	peutavoir = new PeutAvoir(id_apprenant, 8);
+	prepareStatement = AccesBD.getConnection()
+			.prepareStatement("INSERT INTO peutavoir ( id_apprenant, id_activite) VALUES( ?, ?)");
+	prepareStatement.setInt(1, peutavoir.getId_apprenant());
+	prepareStatement.setInt(2, peutavoir.getId_activite());
+	prepareStatement.executeUpdate();
+	
+	peutavoir = new PeutAvoir(id_apprenant, 9);
+	prepareStatement = AccesBD.getConnection()
+			.prepareStatement("INSERT INTO peutavoir ( id_apprenant, id_activite) VALUES( ?, ?)");
+	prepareStatement.setInt(1, peutavoir.getId_apprenant());
+	prepareStatement.setInt(2, peutavoir.getId_activite());
+	prepareStatement.executeUpdate();	
+	
+}
+
+public static void UpdateNomApprenant() throws SQLException {
+	PreparedStatement prepareStatement;
+	ResultSet rs;
+	Scanner scanner = new Scanner(System.in);
+	System.out.print("Veuillez saisir le nom d'un apprenant : ");
+	String nomApprenant = scanner.nextLine();
+	
+	prepareStatement = AccesBD.getConnection()
+			.prepareStatement("SELECT COUNT(nom) from apprenant WHERE nom=?");
+	prepareStatement.setString(1, nomApprenant);
+	rs = prepareStatement.executeQuery();
+	rs.next();
+	if (rs.getInt(1) == 0) {
+		System.out.println("Ce nom n'existe pas !");
+		return;
+	}
+	
+	scanner = new Scanner(System.in);
+	String oldNomApprenant=nomApprenant; 
+	System.out.print("Veuillez saisir le nouveau nom de " + nomApprenant + " : ");
+	nomApprenant = scanner.nextLine();
+	
+	prepareStatement = AccesBD.getConnection()
+			.prepareStatement("UPDATE apprenant SET nom = ? WHERE nom=?");
+	prepareStatement.setString(1, nomApprenant);
+	prepareStatement.setString(2, oldNomApprenant);
+	prepareStatement.executeUpdate();
 	
 }
 

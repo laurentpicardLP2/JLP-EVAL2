@@ -29,7 +29,7 @@ public class Application {
 					break;
 				case 7 : Requetes.ListeActivitesNull();
 					break;
-				case 8 : Requetes.getAllApprenants();
+				case 8 : Requetes.UpdateNomApprenant();
 					break;
 				case 9 : Requetes.getAllApprenants();
 					break;
