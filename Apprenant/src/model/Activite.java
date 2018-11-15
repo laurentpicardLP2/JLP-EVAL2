@@ -11,12 +11,6 @@ public class Activite implements Serializable {
 
 	public Activite() {super();}
 	
-	/**
-	 * Constructeur
-	 * @param id_activite
-	 * @param code_activite
-	 * @param nom_activite
-	 */
 	public Activite(int id_activite, String code_activite, String nom_activite) {
 		super();
 		this.id_activite = id_activite;
@@ -54,7 +48,4 @@ public class Activite implements Serializable {
 				+ nom_activite + "]";
 	}
 	
-	
-	
-
 }

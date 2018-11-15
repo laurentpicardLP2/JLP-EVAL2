@@ -3,11 +3,15 @@ package menu;
 import java.util.Scanner;
 
 public class Menu {
+	
+/*
+ * Méthode pour afficher le menu à l'utilisateur
+ * **/	
 	public static int showMenu() {
 		Scanner scanner = new Scanner(System.in);
 		boolean bSaisie;
-		
 		bSaisie = false;
+		
 		do {
 			System.out.println("1. Affichez les noms et prénoms de tous les apprenant(e)s.");
 			System.out.println("2. Affichez la liste des apprenants pour chaque région (Ile France, Pays de Loire et Aquitaine).");
@@ -19,17 +23,20 @@ public class Menu {
 			System.out.println("8. Mise à jour du nom d’un(e) apprenant(e).");
 			System.out.println("9. Détruire un(e) apprenant(e) en fonction de l’objet Apprenant passé en paramètre.");
 			System.out.println("10. Initialiser la base.");
-			
 			System.out.println("11. Quitter.");
 			System.out.print("Saisir un chiffre : ");
+			
 			String saisie = scanner.nextLine();
 			
-			if(saisie.matches("[1-9]+")) {
+			if (saisie.matches("[1-9]")) {
+				int choix = Integer.parseInt(saisie);
+				return choix;
+			} else if (saisie.matches("[1-9][0-1]")) {
 				int choix = Integer.parseInt(saisie);
 				return choix;
 			}
-		}while (!bSaisie);
-		return 0;
-		
+			
+		} while (!bSaisie);
+		return 0;	
 	}
 }
