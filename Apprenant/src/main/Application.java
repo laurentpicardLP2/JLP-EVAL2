@@ -23,18 +23,21 @@ public class Application {
 				System.out.println(choix);*/
 			
 			//Requete pour initialiser les tables de la bd
-			Requetes.initilialiseBase();
+			//Requetes.initilialiseBase();
 
 			
 			//Affichez les noms et prénoms de tous les apprenant(e)s.
-			Requetes.getAllApprenants();
+			//Requetes.getAllApprenants();
 			
 			//Affichez la liste des apprenants pour chaque région (Ile France, Pays de Loire et Aquitaine).
-			Requetes.apprenantsByArea();
+			//Requetes.apprenantsByArea();
 			
+			//Recherchez un apprenant(e) (par son nom) et afficher la liste des activités qu’il ou qu’elle pratique.
+			Requetes.ListeActiviteForApprenant();
 			
 			//Read : Ecrire une requête qui permet d’afficher la liste des activités que personne ne fait.
 			//SELECT nom_activite FROM activite LEFT JOIN peutavoir ON peutavoir.id_activite = activite.id_activite WHERE peutavoir.id_activite IS NULL;
+			
 			
 			
 		} catch (ClassNotFoundException | SQLException e) {

@@ -6,8 +6,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import connection.AccesBD;
+import model.Activite;
 import model.Apprenant;
 import model.Region;
 
@@ -80,6 +82,51 @@ public static String showArray(ArrayList<Apprenant> apprenants) {
 	String s = new String("");
 	for(Apprenant a : apprenants) s+= a.toStringListeByArea();
 	return s;
+}
+
+
+public static void ListeActiviteForApprenant() throws ClassNotFoundException, SQLException {
+	ArrayList<Activite> activites = new ArrayList<Activite>();
+	PreparedStatement prepareStatement;
+	ResultSet rs;
+	Scanner scanner = new Scanner(System.in);
+	System.out.print("Veuillez saisir le nom d'un apprenant : ");
+	String nomApprenant = scanner.nextLine();
+	
+	prepareStatement = AccesBD.getConnection()
+			.prepareStatement("SELECT COUNT(nom) from apprenant WHERE nom=?");
+	prepareStatement.setString(1, nomApprenant);
+	rs = prepareStatement.executeQuery();
+	rs.next();
+	if( rs.getInt(1) > 0) {
+		
+		prepareStatement = AccesBD.getConnection()
+				.prepareStatement("SELECT id_apprenant from apprenant WHERE nom=?");
+		prepareStatement.setString(1, nomApprenant);
+		rs = prepareStatement.executeQuery();
+		rs.next();
+		int id_apprenant = rs.getInt(1);
+		
+		
+		prepareStatement = AccesBD.getConnection()
+				.prepareStatement("SELECT code_activite, activite.id_activite, id_apprenant, nom_activite FROM peutavoir JOIN activite ON peutavoir.id_activite = activite.id_activite WHERE peutavoir.id_apprenant=?");
+		prepareStatement.setInt(1, id_apprenant);
+		rs = prepareStatement.executeQuery();
+		//prepareStatement.clearParameters();
+		
+		while (rs.next()) {
+			Activite activite = Mapping.mapperActivite(rs);
+			activites.add(activite);
+        }
+		
+		String s = new String("");
+		for(Activite activite : activites) {
+			s += "\n\t" + activite.getNom_activite();
+		}
+		System.out.println("Activites de " + nomApprenant + " : " + s);
+	}
+	
+	
 }
 
 public static void initilialiseBase() throws ClassNotFoundException, SQLException {
