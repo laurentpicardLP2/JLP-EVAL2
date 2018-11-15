@@ -1,46 +1,28 @@
-package connection;
 /**	=====================================================
- * @author Philippe Bouget
- *	Package : fr.bouget.connection
- *
- * exemple de pilote pour la base de données MySQL :
- * com.mysql.jdbc.Driver (dans le jar)
- * 
- * Connexion à MySQL :
- * 
- * identifiant : root
- * mdp : root
- * url : jdbc:mysql://localhost:3306/bd-avion
+ * Evaluation Session 2 | Laurent & Julien	
 ========================================================
  */
+package connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.swing.JOptionPane;
 
-
-/** 	on pourrait appeler cette classe GestionJDBC
- * 		son rôle consiste à gérer la connection à la Base
- * 		de données bd-avion de MySQL.
+/** 	
+ * Connection à la BD SQL 
  */
 
 public class AccesBD {
-
 
 	private static String utilisateur="root";
 	private static String motDePasse="root";
 	private static String pilote = "com.mysql.jdbc.Driver";
 	private static String url = "jdbc:mysql://localhost:3306/bd_apprenant?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&autoReconnect=true&useSSL=false";
 
-
-	/* 	on déclare un objet de la classe Connection de java.sql
-	 * 	Il permet de gérer la connexion entre notre programme java
-	 * 	et la base de données.
-	 */
+	
 	private static Connection connexion=null;
 
 	static
@@ -62,25 +44,24 @@ public class AccesBD {
 	 * Méthode qui retourne un objet de type Connection
 	 * @return Connection
 	 */
-	public synchronized static Connection getConnection()
-	{
-		try
-		{
+	public synchronized static Connection getConnection(){
+		try {
 			if (connexion==null) connexion = DriverManager.getConnection(url, utilisateur, motDePasse);
-
-
-		}catch (Exception e)
-			{
+			}
+		
+		catch (Exception e) {
+			
 				System.out.println(e);
 				JOptionPane.showMessageDialog(null,e.getMessage(),"Connexion à MySQL",JOptionPane.WARNING_MESSAGE);
-			}
-
-		return connexion;
+				
+			} return connexion;
 	}
+	
 
 	/**
 	 * méthode de fermeture d'un objet de type connection
 	 */
+	
 	public static void fermerConnection(Connection connexion)
 	{
 		if (connexion!=null)

@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-
 import connection.AccesBD;
 import model.Activite;
 import model.Apprenant;
@@ -18,110 +17,126 @@ import javax.swing.JOptionPane;
 
 public class Requetes {
 	
-	public static void getAllApprenants() throws ClassNotFoundException, SQLException{
+	public static void getAllApprenants() throws ClassNotFoundException, SQLException {
+		
 		ArrayList<Apprenant>  apprenants = new ArrayList<Apprenant>();
 		String requete	= "SELECT * FROM Apprenant";
 		ResultSet resultat = AccesBD.executerQuery(requete);
-		while(resultat.next())
-		{
+		
+		while (resultat.next()) {
+			
 			Apprenant p = Mapping.mapperApprenant(resultat);
 			apprenants.add(p);
 		}
-		
 		
 		for (Apprenant apprenant : apprenants) {
             System.out.println(apprenant);
         }
 }
 	
-	
-public static void apprenantsByArea() throws ClassNotFoundException, SQLException {
-	HashMap<String, ArrayList<Apprenant>> listeApprenantByArea = new HashMap<String, ArrayList<Apprenant>>();
-	
-	String requete	= "SELECT distinct COUNT(id_region) from region";
-	ResultSet rs = AccesBD.executerQuery(requete);
-	PreparedStatement prepareStatement;
-	String region;
-	ArrayList<Apprenant> apprenants = new ArrayList<Apprenant>();
-	
-	rs.next();
-	int nbRegion = rs.getInt(1);
-	for (int i = 0; i<nbRegion; i++) {
-		prepareStatement = AccesBD.getConnection()
-				.prepareStatement("SELECT nom_region from region WHERE id_region=?");
-		prepareStatement.setInt(1, (i+1));
-		rs = prepareStatement.executeQuery();
+/*
+ * Méthode qui affiche la liste des apprenants par région
+ * **/	
+	public static void apprenantsByArea() throws ClassNotFoundException, SQLException {
+
+		HashMap<String, ArrayList<Apprenant>> listeApprenantByArea = new HashMap<String, ArrayList<Apprenant>>();
+		String requete	= "SELECT distinct COUNT(id_region) from region";
+		ResultSet rs = AccesBD.executerQuery(requete);
+		PreparedStatement prepareStatement;
+		String region;
+		ArrayList<Apprenant> apprenants = new ArrayList<Apprenant>();
 		rs.next();
-		region = rs.getString("nom_region");
-		
-		prepareStatement = AccesBD.getConnection()
-				.prepareStatement("SELECT id_apprenant, prenom, nom, dateNaissance, email, photo, apprenant.id_region, region.id_region, nom_region from apprenant JOIN region ON region.id_region = apprenant.id_region WHERE region.nom_region=?");
-		prepareStatement.setString(1, region);
-		rs = prepareStatement.executeQuery();
-		//prepareStatement.clearParameters();
-		
-		while (rs.next()) {
-			Apprenant p = Mapping.mapperApprenant(rs);
-			apprenants.add(p);
-        }
-		ArrayList<Apprenant> a = (ArrayList<Apprenant>) apprenants.clone();
-		listeApprenantByArea.put(region, a);
-		apprenants.clear();	
-	}	
-	for (String key : listeApprenantByArea.keySet() ) {
-	    System.out.println(key + " (" + listeApprenantByArea.get(key).size() + ") " + showArray(listeApprenantByArea.get(key)) + "\n");
+		int nbRegion = rs.getInt(1);
+
+		for (int i = 0; i<nbRegion; i++) {
+
+			prepareStatement = AccesBD.getConnection()
+					.prepareStatement("SELECT nom_region from region WHERE id_region=?");
+			prepareStatement.setInt(1, (i+1));
+			rs = prepareStatement.executeQuery();
+			rs.next();
+			region = rs.getString("nom_region");
+
+
+			prepareStatement = AccesBD.getConnection()
+					.prepareStatement("SELECT id_apprenant, prenom, nom, dateNaissance, email, photo, apprenant.id_region, region.id_region, nom_region from apprenant JOIN region ON region.id_region = apprenant.id_region WHERE region.nom_region=?");
+			prepareStatement.setString(1, region);
+			rs = prepareStatement.executeQuery();
+
+			while (rs.next()) {
+				Apprenant p = Mapping.mapperApprenant(rs);
+				apprenants.add(p);
+			}
+
+			ArrayList<Apprenant> a = (ArrayList<Apprenant>) apprenants.clone();
+			listeApprenantByArea.put(region, a);
+			apprenants.clear();	
+
+		}	
+
+		for (String key : listeApprenantByArea.keySet() ) {
+			System.out.println(key + " (" + listeApprenantByArea.get(key).size() + ") " + showArray(listeApprenantByArea.get(key)) + "\n");
+		}
+
 	}
+
+/*
+ * Méthode pour afficher la liste des apprenants pour une région
+ * **/
 	
-}
-
-public static String showArray(ArrayList<Apprenant> apprenants) {
-	String s = new String("");
-	for(Apprenant a : apprenants) s+= a.toStringListeByArea();
-	return s;
-}
-
-
-public static void ListeActiviteForApprenant() throws ClassNotFoundException, SQLException {
-	ArrayList<Activite> activites = new ArrayList<Activite>();
-	PreparedStatement prepareStatement;
-	ResultSet rs;
-	Scanner scanner = new Scanner(System.in);
-	System.out.print("Veuillez saisir le nom d'un apprenant : ");
-	String nomApprenant = scanner.nextLine();
-	
-	prepareStatement = AccesBD.getConnection()
-			.prepareStatement("SELECT COUNT(nom) from apprenant WHERE nom=?");
-	prepareStatement.setString(1, nomApprenant);
-	rs = prepareStatement.executeQuery();
-	rs.next();
-	if( rs.getInt(1) > 0) {
+	public static String showArray(ArrayList<Apprenant> apprenants) {
 		
+		String s = new String("");
+		
+		for(Apprenant a : apprenants) s+= a.toStringListeByArea();
+		
+		return s;
+	}
+
+/**
+ * Methode pour afficher la liste des activités pratiquées par un apprenant
+ * */
+	public static void ListeActiviteForApprenant() throws ClassNotFoundException, SQLException {
+		
+		ArrayList<Activite> activites = new ArrayList<Activite>();
+		PreparedStatement prepareStatement;
+		ResultSet rs;
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Veuillez saisir le nom d'un apprenant : ");
+		String nomApprenant = scanner.nextLine();
+
 		prepareStatement = AccesBD.getConnection()
-				.prepareStatement("SELECT id_apprenant from apprenant WHERE nom=?");
+				.prepareStatement("SELECT COUNT(nom) from apprenant WHERE nom=?");
 		prepareStatement.setString(1, nomApprenant);
 		rs = prepareStatement.executeQuery();
 		rs.next();
-		int id_apprenant = rs.getInt(1);
-		
-		
-		prepareStatement = AccesBD.getConnection()
-				.prepareStatement("SELECT code_activite, activite.id_activite, id_apprenant, nom_activite FROM peutavoir JOIN activite ON peutavoir.id_activite = activite.id_activite WHERE peutavoir.id_apprenant=?");
-		prepareStatement.setInt(1, id_apprenant);
-		rs = prepareStatement.executeQuery();
-		//prepareStatement.clearParameters();
-		
-		while (rs.next()) {
-			Activite activite = Mapping.mapperActivite(rs);
-			activites.add(activite);
-        }
-		
-		String s = new String("");
-		for(Activite activite : activites) {
-			s += "\n\t" + activite.getNom_activite();
+		if( rs.getInt(1) > 0) {
+
+			prepareStatement = AccesBD.getConnection()
+					.prepareStatement("SELECT id_apprenant from apprenant WHERE nom=?");
+			prepareStatement.setString(1, nomApprenant);
+			rs = prepareStatement.executeQuery();
+			rs.next();
+			int id_apprenant = rs.getInt(1);
+
+			prepareStatement = AccesBD.getConnection()
+					.prepareStatement("SELECT code_activite, activite.id_activite, id_apprenant, nom_activite FROM peutavoir JOIN activite ON peutavoir.id_activite = activite.id_activite WHERE peutavoir.id_apprenant=?");
+			prepareStatement.setInt(1, id_apprenant);
+			rs = prepareStatement.executeQuery();
+			//prepareStatement.clearParameters();
+
+			while (rs.next()) {
+				Activite activite = Mapping.mapperActivite(rs);
+				activites.add(activite);
+			}
+
+			String s = new String("");
+			for(Activite activite : activites) {
+				s += "\n\t" + activite.getNom_activite();
+			}
+			System.out.println("Activites de " + nomApprenant + " : " + s);
 		}
-		System.out.println("Activites de " + nomApprenant + " : " + s);
 	}
-}
 
 
 public static void ListeApprenantDoActivite() throws ClassNotFoundException, SQLException {
