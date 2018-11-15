@@ -2,6 +2,8 @@ package main;
 
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 import menu.Menu;
 import metier.Requetes;
 
@@ -31,7 +33,7 @@ public class Application {
 					break;
 				case 8 : Requetes.UpdateNomApprenant();
 					break;
-				case 9 : Requetes.getAllApprenants();
+				case 9 : Requetes.DeleteApprenant();
 					break;
 				case 10 : Requetes.initilialiseBase();
 					break;

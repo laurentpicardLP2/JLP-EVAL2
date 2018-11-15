@@ -14,6 +14,8 @@ import model.Apprenant;
 import model.PeutAvoir;
 import model.Region;
 
+import javax.swing.JOptionPane;
+
 public class Requetes {
 	
 	public static void getAllApprenants() throws ClassNotFoundException, SQLException{
@@ -323,6 +325,39 @@ public static void UpdateNomApprenant() throws SQLException {
 	
 }
 
+
+public static void DeleteApprenant() throws SQLException {
+	PreparedStatement prepareStatement;
+	ResultSet rs;
+	Scanner scanner = new Scanner(System.in);
+	System.out.print("Veuillez saisir le nom d'un apprenant : ");
+	String nomApprenant = scanner.nextLine();
+	
+	prepareStatement = AccesBD.getConnection()
+			.prepareStatement("SELECT COUNT(nom) from apprenant WHERE nom=?");
+	prepareStatement.setString(1, nomApprenant);
+	rs = prepareStatement.executeQuery();
+	rs.next();
+	if (rs.getInt(1) == 0) {
+		System.out.println("Ce nom n'existe pas !");
+		return;
+	}
+	
+	System.out.println("Confirmez-vs la suppression de " + nomApprenant + " O / N");
+	String confirme= scanner.next().toLowerCase();
+	if(confirme.equals("o")) {
+		prepareStatement = AccesBD.getConnection()
+				.prepareStatement("DELETE FROM apprenant WHERE nom=?");
+		prepareStatement.setString(1, nomApprenant);
+		prepareStatement.executeUpdate();
+		System.out.println(nomApprenant + " a été supprimé.");
+	}
+		else
+			System.out.println(nomApprenant + " n'a pas été supprimé.");
+	}
+	
+
+
 /*public static final Pattern VALID_EMAIL_ADDRESSREGEX = 
 Pattern.compile("^[A-Z0-9.%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
@@ -373,7 +408,7 @@ public static void initilialiseBase() throws ClassNotFoundException, SQLExceptio
 	AccesBD.executerUpdate(requete);
 }
 		
-
+}
 
 		/*System.out.println("\n\nRequêtes n°2 : (requête préparées) Liste des avions ayant une capacité supérieure à 300 passagers\n");
 		PreparedStatement aPreparedStatement = AccesBD.getConnection().prepareStatement("SELECT * FROM avion where AV_CAPACITE > ?");
@@ -389,7 +424,6 @@ public static void initilialiseBase() throws ClassNotFoundException, SQLExceptio
 											  resultat.getString("AV_SITE"));
 			}*/
 
-	}
 	
 	
 	/**
