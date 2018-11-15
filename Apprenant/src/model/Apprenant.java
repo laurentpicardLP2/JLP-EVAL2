@@ -110,6 +110,12 @@ public class Apprenant {
 		
 	}
 	
+	public String toStringListeByArea() {
+		return "\n\t" + prenom + " " + nom ;
+		
+	}	
+	
+	
 	
 	
 

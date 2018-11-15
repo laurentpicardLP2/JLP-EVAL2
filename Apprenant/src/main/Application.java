@@ -4,27 +4,37 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 import model.Apprenant;
 import metier.Requetes;
 
 public class Application {
-
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-			/*List<Apprenant> apprenants = Requetes.getAllApprenants();
 			
-			for (Apprenant apprenant : apprenants) {
-	            System.out.println(apprenant);
-	        }*/
+			/*scanner = new Scanner(System.in);
+			System.out.print("Saisir un chiffre : ");
+			String saisie = scanner.nextLine();
+			if(saisie.matches("[0-3]")) {
+				int choix = Integer.parseInt(saisie);
+				System.out.println(choix);*/
 			
-			HashMap<String, ArrayList<Apprenant>> listeApprenantByArea = Requetes.apprenantsByArea();
+			//Requete pour initialiser les tables de la bd
+			Requetes.initilialiseBase();
+
 			
-			for (String key : listeApprenantByArea.keySet() ) {
-			    //System.out.println(key + " " + listeApprenantByArea.get(key));
-			}
+			//Affichez les noms et prénoms de tous les apprenant(e)s.
+			Requetes.getAllApprenants();
 			
+			//Affichez la liste des apprenants pour chaque région (Ile France, Pays de Loire et Aquitaine).
+			Requetes.apprenantsByArea();
+			
+			
+			//Read : Ecrire une requête qui permet d’afficher la liste des activités que personne ne fait.
+			//SELECT nom_activite FROM activite LEFT JOIN peutavoir ON peutavoir.id_activite = activite.id_activite WHERE peutavoir.id_activite IS NULL;
 			
 			
 		} catch (ClassNotFoundException | SQLException e) {
@@ -32,5 +42,6 @@ public class Application {
 			e.printStackTrace();
 		}
 	}
+	
 
 }

@@ -261,11 +261,11 @@ public class AccesBD {
 			if (i==1) // on affiche un message d'information sur l'opération pour le plaisir !
 
 			{
-				JOptionPane.showMessageDialog(null, "L'opération a réussie !");
+				//JOptionPane.showMessageDialog(null, "L'opération a réussie !");
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(null, "L'opération a échoué !");
+				//JOptionPane.showMessageDialog(null, "L'opération a échoué !");
 			}
 
 		}
