@@ -138,151 +138,136 @@ public class Requetes {
 		}
 	}
 
+/*
+ * Méthode pour afficher la liste des apprenants pratiquant une activité donnée
+ * **/
+	public static void ListeApprenantDoActivite() throws ClassNotFoundException, SQLException {
+		ArrayList<Apprenant> apprenants = new ArrayList<Apprenant>();
+		PreparedStatement prepareStatement;
+		ResultSet rs;
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Veuillez saisir le nom d'une activite : ");
+		String nomActivite = scanner.nextLine();
 
-public static void ListeApprenantDoActivite() throws ClassNotFoundException, SQLException {
-	ArrayList<Apprenant> apprenants = new ArrayList<Apprenant>();
-	PreparedStatement prepareStatement;
-	ResultSet rs;
-	Scanner scanner = new Scanner(System.in);
-	System.out.print("Veuillez saisir le nom d'une activite : ");
-	String nomActivite = scanner.nextLine();
-	
-	prepareStatement = AccesBD.getConnection()
-			.prepareStatement("SELECT COUNT(nom_activite) from activite WHERE nom_activite=?");
-	prepareStatement.setString(1, nomActivite);
-	rs = prepareStatement.executeQuery();
-	rs.next();
-	if( rs.getInt(1) > 0) {
-		
 		prepareStatement = AccesBD.getConnection()
-				.prepareStatement("SELECT id_activite from activite WHERE nom_activite=?");
+				.prepareStatement("SELECT COUNT(nom_activite) from activite WHERE nom_activite=?");
+		
 		prepareStatement.setString(1, nomActivite);
 		rs = prepareStatement.executeQuery();
 		rs.next();
-		int id_activite = rs.getInt(1);
 		
-		
-		prepareStatement = AccesBD.getConnection()
-				.prepareStatement("SELECT apprenant.id_apprenant, prenom, nom, dateNaissance, email, photo, id_region FROM peutavoir JOIN apprenant ON peutavoir.id_apprenant = apprenant.id_apprenant WHERE peutavoir.id_activite=?");
-		prepareStatement.setInt(1, id_activite);
-		rs = prepareStatement.executeQuery();
-		//prepareStatement.clearParameters();
-		
-		while (rs.next()) {
-			Apprenant apprenant = Mapping.mapperApprenant(rs);
-			apprenants.add(apprenant);
-        }
-		
-		String s = new String("");
-		for(Apprenant apprenant : apprenants) {
-			s += "\n\t" + apprenant.getNom();
-		}
-		System.out.println("Apprenants pratiquant " + nomActivite + " : " + s);
-	}
-}
+		if( rs.getInt(1) > 0) {
 
-public static void ListeActivitesNull() throws ClassNotFoundException, SQLException {
-	ArrayList<Activite>  activites = new ArrayList<Activite>();
-	String requete	= "SELECT nom_activite, code_activite, activite.id_activite FROM activite LEFT JOIN peutavoir ON peutavoir.id_activite = activite.id_activite WHERE peutavoir.id_activite IS NULL;";
-	ResultSet resultat = AccesBD.executerQuery(requete);
-	while(resultat.next())
-	{
-		Activite p = Mapping.mapperActivite(resultat);
-		activites.add(p);
-	}
-	
-	String s = new String("Liste des activites que personne ne pratique : ");
-	
-	for(Activite activite : activites) {
-		s += "\n\t" + activite.getNom_activite();
-	}
-	System.out.println(s);
-}
+			prepareStatement = AccesBD.getConnection()
+					.prepareStatement("SELECT id_activite from activite WHERE nom_activite=?");
+			prepareStatement.setString(1, nomActivite);
+			rs = prepareStatement.executeQuery();
+			rs.next();
+			int id_activite = rs.getInt(1);
 
-public static void AddApprenant() throws ClassNotFoundException, SQLException {
-	ArrayList<Region>  regions = new ArrayList<Region>();
-	ArrayList<Activite>  activites = new ArrayList<Activite>();
-	int id_region=0, choixActivite;
-	String nom, prenom, email, dateNaissance;
-	Scanner scanner = new Scanner(System.in);
-	String requete	= "SELECT nom_region, id_region FROM region;";
-	ResultSet resultat = AccesBD.executerQuery(requete);
-	int i;
-	String s;
-	
-	while(resultat.next())
-	{
-		Region p = Mapping.mapperRegion(resultat);
-		regions.add(p);
-	}
-	
-	s = new String("");
-	i=0;
-	for(Region region : regions) {
-		i++;
-		s += i + ". " + region.getNom_region() + "\t";
-	}
-	do {
-		System.out.print("Choisissez une region par son numero : \n " + s);
-		id_region = scanner.nextInt();
-	}while(id_region <1 || id_region > 3);
-	nom = scanner.nextLine();
-	
-	System.out.print("Nom du nouvel apprenant : ");
-	nom = scanner.nextLine();
-	
-	System.out.print("Prenom du nouvel apprenant : ");
-	prenom = scanner.nextLine();
-	
-	System.out.print("Email du nouvel apprenant : ");
-	email = scanner.nextLine();
-	
-	System.out.print("Date de naissance du nouvel apprenant : ");
-	dateNaissance = scanner.nextLine();
+
+			prepareStatement = AccesBD.getConnection()
+					.prepareStatement("SELECT apprenant.id_apprenant, prenom, nom, dateNaissance, email, photo, id_region FROM peutavoir JOIN apprenant ON peutavoir.id_apprenant = apprenant.id_apprenant WHERE peutavoir.id_activite=?");
+			prepareStatement.setInt(1, id_activite);
+			rs = prepareStatement.executeQuery();
+
+			while (rs.next()) {
+				Apprenant apprenant = Mapping.mapperApprenant(rs);
+				apprenants.add(apprenant);
+			}
+
+			String s = new String("");
 			
-	
-
-	/*requete	= "SELECT nom_activite, code_activite, id_activite FROM activite;";
-	resultat = AccesBD.executerQuery(requete);
-
-	while(resultat.next())
-	{
-		Activite p = Mapping.mapperActivite(resultat);
-		activites.add(p);
+			for(Apprenant apprenant : apprenants) {
+				s += "\n\t" + apprenant.getNom();
+			}
+			
+			System.out.println("Apprenants pratiquant " + nomActivite + " : " + s);
+		}
 	}
-	
-	s = new String("");
-	i=0;
-	for(Activite activite : activites) {
-		i++;
-		s += i + ". " + activite.getNom_activite() + "\n";
+
+/*
+ * Méthode pour afficher la liste des activités que personne ne pratique
+ * **/
+	public static void ListeActivitesNull() throws ClassNotFoundException, SQLException {
+		ArrayList<Activite>  activites = new ArrayList<Activite>();
+		String requete	= "SELECT nom_activite, code_activite, activite.id_activite FROM activite LEFT JOIN peutavoir ON peutavoir.id_activite = activite.id_activite WHERE peutavoir.id_activite IS NULL;";
+		ResultSet resultat = AccesBD.executerQuery(requete);
+		
+		while(resultat.next()) {
+			Activite p = Mapping.mapperActivite(resultat);
+			activites.add(p);
+		}
+
+		String s = new String("Liste des activites que personne ne pratique : ");
+
+		for(Activite activite : activites) {
+			s += "\n\t" + activite.getNom_activite();
+		}
+		
+		System.out.println(s);
 	}
-	do {
-		System.out.print("Choisissez une activite par son numero (0 pour aucune, -1 pour quitter) : \n " + s);
-		choixActivite = scanner.nextInt();
-	}while(choixActivite <-1 || choixActivite > 13);*/
-	
-	
-	
-	
-    //String vDateYMD = dateFormatYMD.format(now);
-    //String vDateYMDSQL =  vDateYMD ;
-    //java.sql.Date date = new java.sql.Date(0000-00-00);
-	
-	Apprenant apprenant = new Apprenant(nom, prenom, null, email, id_region);
-	
-	//PreparedStatement prepareStatement = AccesBD.getConnection()
-			//.prepareStatement("INSERT INTO Apprenant ( nom, prenom, dateNaissance, email, id_region ) VALUES( ?, ?, ?, ?, ?)");
-	PreparedStatement prepareStatement = AccesBD.getConnection()
-			.prepareStatement("INSERT INTO Apprenant ( nom, prenom , email, dateNaissance, id_region ) VALUES( ?, ?, ?, ?, ?)");
-	prepareStatement.setString(1, apprenant.getNom());
-	prepareStatement.setString(2, apprenant.getPrenom());
-	prepareStatement.setString(3, apprenant.getEmail());
-	prepareStatement.setDate(4, Date.valueOf(dateNaissance));
-	prepareStatement.setInt(5, apprenant.getId_region());
-	prepareStatement.executeUpdate();		
-	
-}
+/*
+ * Méthode pour ajouter un nouvel apprenant à la table Apprenant dans la bd_apprenant
+ * **/
+	public static void AddApprenant() throws ClassNotFoundException, SQLException {
+		ArrayList<Region>  regions = new ArrayList<Region>();
+		ArrayList<Activite>  activites = new ArrayList<Activite>();
+		int id_region = 0, choixActivite, i;
+		String nom, prenom, email, dateNaissance, s;
+		Scanner scanner = new Scanner(System.in);
+		String requete	= "SELECT nom_region, id_region FROM region;";
+		ResultSet resultat = AccesBD.executerQuery(requete);
+
+		while (resultat.next()) {
+			
+			Region p = Mapping.mapperRegion(resultat);
+			regions.add(p);
+		}
+
+		s = new String("");
+		i = 0;
+
+		for (Region region : regions) {
+			i++;
+			s += i + ". " + region.getNom_region() + "\t";
+		} do {
+			System.out.print("Choisissez une region par son numero : \n " + s);
+			id_region = scanner.nextInt();
+		} while(id_region <1 || id_region > 3);
+		nom = scanner.nextLine();
+
+		System.out.print("Nom du nouvel apprenant : ");
+		nom = scanner.nextLine();
+
+		System.out.print("Prenom du nouvel apprenant : ");
+		prenom = scanner.nextLine();
+
+		System.out.print("Email du nouvel apprenant : ");
+		email = scanner.nextLine();
+
+		System.out.print("Date de naissance du nouvel apprenant : ");
+		dateNaissance = scanner.nextLine();
+
+
+		Apprenant apprenant = new Apprenant(nom, prenom, null, email, id_region);
+
+		PreparedStatement prepareStatement = AccesBD.getConnection()
+				.prepareStatement("INSERT INTO Apprenant ( nom, prenom , email, dateNaissance, id_region ) VALUES( ?, ?, ?, ?, ?)");
+
+		prepareStatement.setString(1, apprenant.getNom());
+
+		prepareStatement.setString(2, apprenant.getPrenom());
+
+		prepareStatement.setString(3, apprenant.getEmail());
+
+		prepareStatement.setDate(4, Date.valueOf(dateNaissance));
+
+		prepareStatement.setInt(5, apprenant.getId_region());
+
+		prepareStatement.executeUpdate();		
+
+	}
 
 // 8 et 9
 
