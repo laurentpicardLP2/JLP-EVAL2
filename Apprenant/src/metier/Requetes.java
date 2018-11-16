@@ -330,7 +330,7 @@ public class Requetes {
 
 	}
 
-	/**
+	/***
 	 * Méthode pour supprimer un apprendant de la table Apprenant 
 	 */
 	public static void DeleteApprenant() throws SQLException {
