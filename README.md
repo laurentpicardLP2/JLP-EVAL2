@@ -8,7 +8,7 @@
 ![MCD](https://github.com/laurentpicardLP2/JLP-EVAL2/blob/master/Apprenant/src/ressources/MCD_bd_apprenant.png)
 
 ## Visualisation des packages du projet
-![Package](package_bd_apprenant.PNG)
+![Package](https://github.com/laurentpicardLP2/JLP-EVAL2/blob/master/Apprenant/src/ressources/package_bd_apprenant.PNG?raw=true)
 
 ## Outils utilisés
 * Le modèle conceptuel de données a été réalisé avec MERISE JFREE SOFT, générant les modèles logique et physiques de données
