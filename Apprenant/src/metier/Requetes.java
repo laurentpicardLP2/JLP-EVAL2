@@ -17,30 +17,30 @@ import model.Region;
  * 
  * @author laure
  * 
- *
  */
 public class Requetes {
-	
+
 	public static void getAllApprenants() throws ClassNotFoundException, SQLException {
-		
+
 		ArrayList<Apprenant>  apprenants = new ArrayList<Apprenant>();
 		String requete	= "SELECT * FROM Apprenant";
 		ResultSet resultat = AccesBD.executerQuery(requete);
-		
+
 		while (resultat.next()) {
-			
+
 			Apprenant p = Mapping.mapperApprenant(resultat);
 			apprenants.add(p);
 		}
-		
+
 		for (Apprenant apprenant : apprenants) {
-            System.out.println(apprenant);
-        }
-}
-	
-/*
- * Méthode qui affiche la liste des apprenants par région
- * **/	
+			System.out.println(apprenant);
+		}
+	}
+
+	/**
+	 * 
+	 * Méthode qui affiche la liste des apprenants par région
+	 */	
 	public static void apprenantsByArea() throws ClassNotFoundException, SQLException {
 
 		HashMap<String, ArrayList<Apprenant>> listeApprenantByArea = new HashMap<String, ArrayList<Apprenant>>();
@@ -84,24 +84,24 @@ public class Requetes {
 
 	}
 
-/*
- * Méthode pour afficher la liste des apprenants pour une région
- * **/
-	
+	/**
+	 * Méthode pour afficher la liste des apprenants pour une région
+	 */
+
 	public static String showArray(ArrayList<Apprenant> apprenants) {
-		
+
 		String s = new String("");
-		
+
 		for(Apprenant a : apprenants) s+= a.toStringListeByArea();
-		
+
 		return s;
 	}
 
-/**
- * Methode pour afficher la liste des activités pratiquées par un apprenant
- * */
+	/**
+	 * Methode pour afficher la liste des activités pratiquées par un apprenant
+	 */
 	public static void ListeActiviteForApprenant() throws ClassNotFoundException, SQLException {
-		
+
 		ArrayList<Activite> activites = new ArrayList<Activite>();
 		PreparedStatement prepareStatement;
 		ResultSet rs;
@@ -142,9 +142,9 @@ public class Requetes {
 		}
 	}
 
-/*
- * Méthode pour afficher la liste des apprenants pratiquant une activité donnée
- * **/
+	/**
+	 * Méthode pour afficher la liste des apprenants pratiquant une activité donnée
+	 */
 	public static void ListeApprenantDoActivite() throws ClassNotFoundException, SQLException {
 		ArrayList<Apprenant> apprenants = new ArrayList<Apprenant>();
 		PreparedStatement prepareStatement;
@@ -155,11 +155,11 @@ public class Requetes {
 
 		prepareStatement = AccesBD.getConnection()
 				.prepareStatement("SELECT COUNT(nom_activite) from activite WHERE nom_activite=?");
-		
+
 		prepareStatement.setString(1, nomActivite);
 		rs = prepareStatement.executeQuery();
 		rs.next();
-		
+
 		if( rs.getInt(1) > 0) {
 
 			prepareStatement = AccesBD.getConnection()
@@ -181,23 +181,23 @@ public class Requetes {
 			}
 
 			String s = new String("");
-			
+
 			for(Apprenant apprenant : apprenants) {
 				s += "\n\t" + apprenant.getNom();
 			}
-			
+
 			System.out.println("Apprenants pratiquant " + nomActivite + " : " + s);
 		}
 	}
 
-/*
- * Méthode pour afficher la liste des activités que personne ne pratique
- * **/
+	/**
+	 * Méthode pour afficher la liste des activités que personne ne pratique
+	 */
 	public static void ListeActivitesNull() throws ClassNotFoundException, SQLException {
 		ArrayList<Activite>  activites = new ArrayList<Activite>();
 		String requete	= "SELECT nom_activite, code_activite, activite.id_activite FROM activite LEFT JOIN peutavoir ON peutavoir.id_activite = activite.id_activite WHERE peutavoir.id_activite IS NULL;";
 		ResultSet resultat = AccesBD.executerQuery(requete);
-		
+
 		while(resultat.next()) {
 			Activite p = Mapping.mapperActivite(resultat);
 			activites.add(p);
@@ -208,12 +208,12 @@ public class Requetes {
 		for(Activite activite : activites) {
 			s += "\n\t" + activite.getNom_activite();
 		}
-		
+
 		System.out.println(s);
 	}
-/*
- * Méthode pour ajouter un nouvel apprenant à la table Apprenant dans la bd_apprenant
- * **/
+	/**
+	 * Méthode pour ajouter un nouvel apprenant à la table Apprenant dans la bd_apprenant
+	 */
 	public static void AddApprenant() throws ClassNotFoundException, SQLException {
 		ArrayList<Region>  regions = new ArrayList<Region>();
 		int id_region = 0, i;
@@ -223,7 +223,7 @@ public class Requetes {
 		ResultSet resultat = AccesBD.executerQuery(requete);
 
 		while (resultat.next()) {
-			
+
 			Region p = Mapping.mapperRegion(resultat);
 			regions.add(p);
 		}
@@ -234,12 +234,12 @@ public class Requetes {
 		for (Region region : regions) {
 			i++;
 			s += i + ". " + region.getNom_region() + "\t";
-			
+
 		} do {
-			
+
 			System.out.print("Choisissez une region par son numero : \n " + s);
 			id_region = scanner.nextInt();
-			
+
 		} while (id_region <1 || id_region > 3);
 		nom = scanner.nextLine();
 
@@ -269,9 +269,9 @@ public class Requetes {
 		prepareStatement.executeUpdate();		
 
 	}
-/*
- * Méthode pour ajouter les activités Carresser le chat et Ecouter la musique au nouvel apprenant créé
- * **/
+	/**
+	 * Méthode pour ajouter les activités Carresser le chat et Ecouter la musique au nouvel apprenant créé
+	 */
 	public static void AddCaresser() throws ClassNotFoundException, SQLException {
 		String requete	= "SELECT MAX(id_apprenant) FROM apprenant";
 		ResultSet rs = AccesBD.executerQuery(requete);
@@ -295,23 +295,23 @@ public class Requetes {
 		prepareStatement.executeUpdate();	
 
 	}
-/*
- * Méthode pour modifier le nom d'un apprenant
- * **/
+	/**
+	 * Méthode pour modifier le nom d'un apprenant
+	 */
 	public static void UpdateNomApprenant() throws SQLException {
 		PreparedStatement prepareStatement;
 		ResultSet rs;
 		Scanner scanner = new Scanner(System.in);
 		System.out.print("Veuillez saisir le nom d'un apprenant : ");
 		String nomApprenant = scanner.nextLine();
-		
+
 		prepareStatement = AccesBD.getConnection()
 				.prepareStatement("SELECT COUNT(nom) from apprenant WHERE nom=?");
-		
+
 		prepareStatement.setString(1, nomApprenant);
 		rs = prepareStatement.executeQuery();
 		rs.next();
-		
+
 		if (rs.getInt(1) == 0) {
 			System.out.println("Ce nom n'existe pas !");
 			return;
@@ -330,47 +330,60 @@ public class Requetes {
 
 	}
 
-/*
- * Méthode pour supprimer un apprendant de la table Apprenant 
- ***/
-public static void DeleteApprenant() throws SQLException {
-	PreparedStatement prepareStatement;
-	ResultSet rs;
-	Scanner scanner = new Scanner(System.in);
-	System.out.print("Veuillez saisir le nom d'un apprenant : ");
-	String nomApprenant = scanner.nextLine();
-	
-	prepareStatement = AccesBD.getConnection()
-			.prepareStatement("SELECT COUNT(nom) from apprenant WHERE nom=?");
-	prepareStatement.setString(1, nomApprenant);
-	rs = prepareStatement.executeQuery();
-	rs.next();
-	
-	if (rs.getInt(1) == 0) {
-		System.out.println("Ce nom n'existe pas !");
-		return;
-	}
-	
-	System.out.println("Confirmez-vs la suppression de " + nomApprenant + " O / N");
-	String confirme= scanner.next().toLowerCase();
-	
-	if (confirme.equals("o")) {
+	/**
+	 * Méthode pour supprimer un apprendant de la table Apprenant 
+	 */
+	public static void DeleteApprenant() throws SQLException {
+		PreparedStatement prepareStatement;
+		ResultSet rs;
+		Scanner scanner = new Scanner(System.in);
+		int id_apprenant;
+		System.out.print("Veuillez saisir le nom d'un apprenant : ");
+		String nomApprenant = scanner.nextLine();
+
 		prepareStatement = AccesBD.getConnection()
-				.prepareStatement("DELETE FROM apprenant WHERE nom=?");
+				.prepareStatement("SELECT COUNT(nom) from apprenant WHERE nom=?");
 		prepareStatement.setString(1, nomApprenant);
-		prepareStatement.executeUpdate();
-		System.out.println(nomApprenant + " a été supprimé.");
-	}
+		rs = prepareStatement.executeQuery();
+		rs.next();
+
+		if (rs.getInt(1) == 0) {
+			System.out.println("Ce nom n'existe pas !");
+			return;
+		}
+
+		System.out.println("Confirmez-vs la suppression de " + nomApprenant + " O / N");
+		String confirme= scanner.next().toLowerCase();
+
+		if (confirme.equals("o")) {
+			prepareStatement = AccesBD.getConnection()
+					.prepareStatement("SELECT id_apprenant from apprenant WHERE nom=?");
+			prepareStatement.setString(1, nomApprenant);
+			rs = prepareStatement.executeQuery();
+			rs.next();
+			id_apprenant=rs.getInt(1);
+			
+			prepareStatement = AccesBD.getConnection()
+					.prepareStatement("DELETE FROM peutavoir WHERE id_apprenant=?");
+			prepareStatement.setInt(1, id_apprenant);
+			prepareStatement.executeUpdate();
+			
+			prepareStatement = AccesBD.getConnection()
+					.prepareStatement("DELETE FROM apprenant WHERE nom=?");
+			prepareStatement.setString(1, nomApprenant);
+			prepareStatement.executeUpdate();
+			System.out.println(nomApprenant + " a été supprimé.");
+		}
 		else
 			System.out.println(nomApprenant + " n'a pas été supprimé.");
 	}
 
-/*
- * Méthode pour réinitialiser la base bd_apprenant
- * **/
+	/**
+	 * Méthode pour réinitialiser la base bd_apprenant
+	 */
 
 	public static void initialiseBase() throws ClassNotFoundException, SQLException {
-		
+
 		String requete	= "DROP TABLE IF EXISTS peutavoir ;";
 		AccesBD.executerUpdate(requete);
 		requete	= "DROP TABLE IF EXISTS apprenant;";
@@ -382,7 +395,7 @@ public static void DeleteApprenant() throws SQLException {
 
 		requete = "CREATE TABLE Region(id_region  Int  Auto_increment  NOT NULL ,nom_region Varchar (50) NOT NULL,CONSTRAINT Region_PK PRIMARY KEY (id_region))ENGINE=InnoDB;";
 		AccesBD.executerUpdate(requete);
-	
+
 		requete	= "CREATE TABLE Activite(\r\n" + 
 				"        id_activite   Int  Auto_increment  NOT NULL ,\r\n" + 
 				"        code_activite Char (3) NOT NULL ,\r\n" + 
@@ -390,25 +403,25 @@ public static void DeleteApprenant() throws SQLException {
 				"	,CONSTRAINT Activite_PK PRIMARY KEY (id_activite)\r\n" + 
 				")ENGINE=InnoDB;";
 		AccesBD.executerUpdate(requete);
-	
+
 		requete = "CREATE TABLE Apprenant(id_apprenant  Int  Auto_increment  NOT NULL ,nom Varchar (50) NOT NULL , prenom Varchar (50) NOT NULL , dateNaissance Date NULL , email Varchar (50) NOT NULL ,photo Varchar (50) NULL ,id_region Int NOT NULL ,CONSTRAINT Apprenant_PK PRIMARY KEY (id_apprenant) ,CONSTRAINT Apprenant_Region_FK FOREIGN KEY (id_region) REFERENCES Region(id_region))ENGINE=InnoDB;";
 		AccesBD.executerUpdate(requete);
-	
+
 		requete = "CREATE TABLE peutAvoir(id_activite  Int NOT NULL ,id_apprenant Int NOT NULL,CONSTRAINT peutAvoir_PK PRIMARY KEY (id_activite,id_apprenant),CONSTRAINT peutAvoir_Activite_FK FOREIGN KEY (id_activite) REFERENCES Activite(id_activite),CONSTRAINT peutAvoir_Apprenant0_FK FOREIGN KEY (id_apprenant) REFERENCES Apprenant(id_apprenant))ENGINE=InnoDB;";
 		AccesBD.executerUpdate(requete);
-	
+
 		requete = "INSERT INTO `region` (`nom_region`) VALUES ('Ile de France'), ('Pays de Loire'), ('Aquitaine');";
 		AccesBD.executerUpdate(requete);
-	
+
 		requete = "INSERT INTO `activite` (`code_activite`, `nom_activite`) VALUES ('001', 'Programmer en java'),('002', 'Ecouter les mouches'),('003', 'Jouer au bilboquet'),('004', 'Dormir pendant le cours'),('005', 'Chercher un stage à Haiti'),('006', 'Attendre les vacances'),('007', 'Prendre le goûter'),('008', 'Caresser le chat'),('009', 'Ecouter de la musique'),('010', 'Rien faire'),('011', 'Jouer à Angular'),('012', 'Rêver'),('013', 'Travailler jour et nuit');";
 		AccesBD.executerUpdate(requete);
-	
+
 		requete = "INSERT INTO Apprenant (nom, prenom,dateNaissance, email, id_region) VALUES ('Autrique', 'Géraldine', '1970-12-27', 'geraldine.autrique@laposte.fr', 3 ),('Filine', 'Nicolas', '1986-08-07', 'nicolas.filine@laposte.fr', 1),('Gorce', 'Pierre', '1976-01-05', 'pierrexgorce@gmail.com', 1 ),('Joblon', 'Samuel', '1973-10-18', 'samuel.joblon@gmail.com', 1),('Kamvongsa', 'Phoneprasong', null, 'pomlao@hotmail.com', 2 ),('Lebegue', 'Vincent', '1986-08-13', 'vincent.lebegue@labanquepostale.fr', 1 ),('Londeix', 'Matthieu', '1981-05-19', 'matthieu.londeix@laposte.fr', 2),('Longueville', 'Thomas', '1972-04-26', 'thomas.longueville@laposte.fr', 2 ),('Métivier', 'Christine', '1980-04-29', 'christine.pereira@laposte.fr', 1 ),('Picard', 'Laurent', '1972-03-22', 'laurent2.picard@laposte.fr', 1 ),('Pouline', 'David', '1982-07-07', 'david.pouline@facteo.fr', 3 ),('Prodhomme', 'Julien', '1990-08-30', 'prodhomme.julien@gmail.com', 1 ),('Sabot', 'Samuel', '1980-04-10', 'samuel.sabot@facteo.fr', 3),('Sancesario', 'Salvatore', '1975-05-10', 'salvatore.sancesario@facteo.fr', 1),('Sylvestre', 'David', '1986-07-06', 'david.sylvestre@mfacteur.fr', 2),('Tressous', 'Cédric', '1984-08-08', 'cedric.tressous@gmail.com', 2),('Zébutruc', 'Zébulon', '1977-03-13', 'zebulonzeb@free.fr', 2);";
 		AccesBD.executerUpdate(requete);
-	
+
 		requete = "INSERT INTO peutAvoir (id_activite, id_apprenant) VALUES (1, 1),(3, 1),(5, 1),(2, 2),(4, 2),(6, 2),(7, 3),(8, 4),(10, 4),(2, 5),(4, 5),(6, 5),(1, 6),(3, 6),(5, 6),(2, 7),(4, 7),(6, 7),(10, 8),(9, 8),(8, 8),(1, 9),(3, 9),(5,9),(11, 10),(2, 11),(4, 11),(6, 11),(1,12),(3, 12),(5, 12),(8, 13 ),(10, 13),(1, 14 ),(3, 14),(5, 14),(8, 15),(11, 16);";
 		AccesBD.executerUpdate(requete);
-		
+
 	}
 
 }
