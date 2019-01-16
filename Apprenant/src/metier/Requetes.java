@@ -39,7 +39,7 @@ public class Requetes {
 
 	/**
 	 * 
-	 * Méthode qui affiche la liste des apprenants par région
+	 * Mï¿½thode qui affiche la liste des apprenants par rï¿½gion
 	 */	
 	public static void apprenantsByArea() throws ClassNotFoundException, SQLException {
 
@@ -85,7 +85,7 @@ public class Requetes {
 	}
 
 	/**
-	 * Méthode pour afficher la liste des apprenants pour une région
+	 * Mï¿½thode pour afficher la liste des apprenants pour une rï¿½gion
 	 */
 
 	public static String showArray(ArrayList<Apprenant> apprenants) {
@@ -98,7 +98,7 @@ public class Requetes {
 	}
 
 	/**
-	 * Methode pour afficher la liste des activités pratiquées par un apprenant
+	 * Methode pour afficher la liste des activitï¿½s pratiquï¿½es par un apprenant
 	 */
 	public static void ListeActiviteForApprenant() throws ClassNotFoundException, SQLException {
 
@@ -143,7 +143,7 @@ public class Requetes {
 	}
 
 	/**
-	 * Méthode pour afficher la liste des apprenants pratiquant une activité donnée
+	 * Mï¿½thode pour afficher la liste des apprenants pratiquant une activitï¿½ donnï¿½e
 	 */
 	public static void ListeApprenantDoActivite() throws ClassNotFoundException, SQLException {
 		ArrayList<Apprenant> apprenants = new ArrayList<Apprenant>();
@@ -191,7 +191,7 @@ public class Requetes {
 	}
 
 	/**
-	 * Méthode pour afficher la liste des activités que personne ne pratique
+	 * Mï¿½thode pour afficher la liste des activitï¿½s que personne ne pratique
 	 */
 	public static void ListeActivitesNull() throws ClassNotFoundException, SQLException {
 		ArrayList<Activite>  activites = new ArrayList<Activite>();
@@ -212,7 +212,7 @@ public class Requetes {
 		System.out.println(s);
 	}
 	/**
-	 * Méthode pour ajouter un nouvel apprenant à la table Apprenant dans la bd_apprenant
+	 * Mï¿½thode pour ajouter un nouvel apprenant ï¿½ la table Apprenant dans la bd_apprenant
 	 */
 	public static void AddApprenant() throws ClassNotFoundException, SQLException {
 		ArrayList<Region>  regions = new ArrayList<Region>();
@@ -270,7 +270,7 @@ public class Requetes {
 
 	}
 	/**
-	 * Méthode pour ajouter les activités Carresser le chat et Ecouter la musique au nouvel apprenant créé
+	 * Mï¿½thode pour ajouter les activitï¿½s Carresser le chat et Ecouter la musique au nouvel apprenant crï¿½ï¿½
 	 */
 	public static void AddCaresser() throws ClassNotFoundException, SQLException {
 		String requete	= "SELECT MAX(id_apprenant) FROM apprenant";
@@ -296,7 +296,7 @@ public class Requetes {
 
 	}
 	/**
-	 * Méthode pour modifier le nom d'un apprenant
+	 * Mï¿½thode pour modifier le nom d'un apprenant
 	 */
 	public static void UpdateNomApprenant() throws SQLException {
 		PreparedStatement prepareStatement;
@@ -331,7 +331,7 @@ public class Requetes {
 	}
 
 	/***
-	 * Méthode pour supprimer un apprendant de la table Apprenant 
+	 * Mï¿½thode pour supprimer un apprendant de la table Apprenant 
 	 */
 	public static void DeleteApprenant() throws SQLException {
 		PreparedStatement prepareStatement;
@@ -372,25 +372,25 @@ public class Requetes {
 					.prepareStatement("DELETE FROM apprenant WHERE nom=?");
 			prepareStatement.setString(1, nomApprenant);
 			prepareStatement.executeUpdate();
-			System.out.println(nomApprenant + " a été supprimé.");
+			System.out.println(nomApprenant + " a ï¿½tï¿½ supprimï¿½.");
 		}
 		else
-			System.out.println(nomApprenant + " n'a pas été supprimé.");
+			System.out.println(nomApprenant + " n'a pas ï¿½tï¿½ supprimï¿½.");
 	}
 
 	/**
-	 * Méthode pour réinitialiser la base bd_apprenant
+	 * Mï¿½thode pour rï¿½initialiser la base bd_apprenant
 	 */
 
 	public static void initialiseBase() throws ClassNotFoundException, SQLException {
 
-		String requete	= "DROP TABLE IF EXISTS peutavoir ;";
+		String requete	= "DROP TABLE IF EXISTS peutAvoir ;";
 		AccesBD.executerUpdate(requete);
-		requete	= "DROP TABLE IF EXISTS apprenant;";
+		requete	= "DROP TABLE IF EXISTS Apprenant;";
 		AccesBD.executerUpdate(requete);
-		requete	= "DROP TABLE IF EXISTS activite ;";
+		requete	= "DROP TABLE IF EXISTS Activite ;";
 		AccesBD.executerUpdate(requete);
-		requete	= "DROP TABLE IF EXISTS region ;";
+		requete	= "DROP TABLE IF EXISTS Region ;";
 		AccesBD.executerUpdate(requete);
 
 		requete = "CREATE TABLE Region(id_region  Int  Auto_increment  NOT NULL ,nom_region Varchar (50) NOT NULL,CONSTRAINT Region_PK PRIMARY KEY (id_region))ENGINE=InnoDB;";
@@ -410,13 +410,13 @@ public class Requetes {
 		requete = "CREATE TABLE peutAvoir(id_activite  Int NOT NULL ,id_apprenant Int NOT NULL,CONSTRAINT peutAvoir_PK PRIMARY KEY (id_activite,id_apprenant),CONSTRAINT peutAvoir_Activite_FK FOREIGN KEY (id_activite) REFERENCES Activite(id_activite),CONSTRAINT peutAvoir_Apprenant0_FK FOREIGN KEY (id_apprenant) REFERENCES Apprenant(id_apprenant))ENGINE=InnoDB;";
 		AccesBD.executerUpdate(requete);
 
-		requete = "INSERT INTO `region` (`nom_region`) VALUES ('Ile de France'), ('Pays de Loire'), ('Aquitaine');";
+		requete = "INSERT INTO `Region` (`nom_region`) VALUES ('Ile de France'), ('Pays de Loire'), ('Aquitaine');";
 		AccesBD.executerUpdate(requete);
 
-		requete = "INSERT INTO `activite` (`code_activite`, `nom_activite`) VALUES ('001', 'Programmer en java'),('002', 'Ecouter les mouches'),('003', 'Jouer au bilboquet'),('004', 'Dormir pendant le cours'),('005', 'Chercher un stage à Haiti'),('006', 'Attendre les vacances'),('007', 'Prendre le goûter'),('008', 'Caresser le chat'),('009', 'Ecouter de la musique'),('010', 'Rien faire'),('011', 'Jouer à Angular'),('012', 'Rêver'),('013', 'Travailler jour et nuit');";
+		requete = "INSERT INTO `Activite` (`code_activite`, `nom_activite`) VALUES ('001', 'Programmer en java'),('002', 'Ecouter les mouches'),('003', 'Jouer au bilboquet'),('004', 'Dormir pendant le cours'),('005', 'Chercher un stage ï¿½ Haiti'),('006', 'Attendre les vacances'),('007', 'Prendre le goï¿½ter'),('008', 'Caresser le chat'),('009', 'Ecouter de la musique'),('010', 'Rien faire'),('011', 'Jouer ï¿½ Angular'),('012', 'Rï¿½ver'),('013', 'Travailler jour et nuit');";
 		AccesBD.executerUpdate(requete);
 
-		requete = "INSERT INTO Apprenant (nom, prenom,dateNaissance, email, id_region) VALUES ('Autrique', 'Géraldine', '1970-12-27', 'geraldine.autrique@laposte.fr', 3 ),('Filine', 'Nicolas', '1986-08-07', 'nicolas.filine@laposte.fr', 1),('Gorce', 'Pierre', '1976-01-05', 'pierrexgorce@gmail.com', 1 ),('Joblon', 'Samuel', '1973-10-18', 'samuel.joblon@gmail.com', 1),('Kamvongsa', 'Phoneprasong', null, 'pomlao@hotmail.com', 2 ),('Lebegue', 'Vincent', '1986-08-13', 'vincent.lebegue@labanquepostale.fr', 1 ),('Londeix', 'Matthieu', '1981-05-19', 'matthieu.londeix@laposte.fr', 2),('Longueville', 'Thomas', '1972-04-26', 'thomas.longueville@laposte.fr', 2 ),('Métivier', 'Christine', '1980-04-29', 'christine.pereira@laposte.fr', 1 ),('Picard', 'Laurent', '1972-03-22', 'laurent2.picard@laposte.fr', 1 ),('Pouline', 'David', '1982-07-07', 'david.pouline@facteo.fr', 3 ),('Prodhomme', 'Julien', '1990-08-30', 'prodhomme.julien@gmail.com', 1 ),('Sabot', 'Samuel', '1980-04-10', 'samuel.sabot@facteo.fr', 3),('Sancesario', 'Salvatore', '1975-05-10', 'salvatore.sancesario@facteo.fr', 1),('Sylvestre', 'David', '1986-07-06', 'david.sylvestre@mfacteur.fr', 2),('Tressous', 'Cédric', '1984-08-08', 'cedric.tressous@gmail.com', 2),('Zébutruc', 'Zébulon', '1977-03-13', 'zebulonzeb@free.fr', 2);";
+		requete = "INSERT INTO Apprenant (nom, prenom,dateNaissance, email, id_region) VALUES ('Autrique', 'Gï¿½raldine', '1970-12-27', 'geraldine.autrique@laposte.fr', 3 ),('Filine', 'Nicolas', '1986-08-07', 'nicolas.filine@laposte.fr', 1),('Gorce', 'Pierre', '1976-01-05', 'pierrexgorce@gmail.com', 1 ),('Joblon', 'Samuel', '1973-10-18', 'samuel.joblon@gmail.com', 1),('Kamvongsa', 'Phoneprasong', null, 'pomlao@hotmail.com', 2 ),('Lebegue', 'Vincent', '1986-08-13', 'vincent.lebegue@labanquepostale.fr', 1 ),('Londeix', 'Matthieu', '1981-05-19', 'matthieu.londeix@laposte.fr', 2),('Longueville', 'Thomas', '1972-04-26', 'thomas.longueville@laposte.fr', 2 ),('Mï¿½tivier', 'Christine', '1980-04-29', 'christine.pereira@laposte.fr', 1 ),('Picard', 'Laurent', '1972-03-22', 'laurent2.picard@laposte.fr', 1 ),('Pouline', 'David', '1982-07-07', 'david.pouline@facteo.fr', 3 ),('Prodhomme', 'Julien', '1990-08-30', 'prodhomme.julien@gmail.com', 1 ),('Sabot', 'Samuel', '1980-04-10', 'samuel.sabot@facteo.fr', 3),('Sancesario', 'Salvatore', '1975-05-10', 'salvatore.sancesario@facteo.fr', 1),('Sylvestre', 'David', '1986-07-06', 'david.sylvestre@mfacteur.fr', 2),('Tressous', 'Cï¿½dric', '1984-08-08', 'cedric.tressous@gmail.com', 2),('Zï¿½butruc', 'Zï¿½bulon', '1977-03-13', 'zebulonzeb@free.fr', 2);";
 		AccesBD.executerUpdate(requete);
 
 		requete = "INSERT INTO peutAvoir (id_activite, id_apprenant) VALUES (1, 1),(3, 1),(5, 1),(2, 2),(4, 2),(6, 2),(7, 3),(8, 4),(10, 4),(2, 5),(4, 5),(6, 5),(1, 6),(3, 6),(5, 6),(2, 7),(4, 7),(6, 7),(10, 8),(9, 8),(8, 8),(1, 9),(3, 9),(5,9),(11, 10),(2, 11),(4, 11),(6, 11),(1,12),(3, 12),(5, 12),(8, 13 ),(10, 13),(1, 14 ),(3, 14),(5, 14),(8, 15),(11, 16);";

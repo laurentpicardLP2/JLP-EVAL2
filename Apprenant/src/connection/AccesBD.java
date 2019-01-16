@@ -12,7 +12,7 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 /** 	
- * Connection à la BD SQL 
+ * Connection ï¿½ la BD SQL 
  */
 
 public class AccesBD {
@@ -20,8 +20,8 @@ public class AccesBD {
 	private static String utilisateur="root";
 	private static String motDePasse="root";
 	private static String pilote = "com.mysql.jdbc.Driver";
-	private static String url = "jdbc:mysql://localhost:3306/bd_apprenant?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&autoReconnect=true&useSSL=false";
-
+	private static String url = "jdbc:mysql://localhost:3306/bd_apprenant?useSSL=false";
+	//String url = "jdbc:mysql://localhost:3306/bd-avion?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
 	
 	private static Connection connexion=null;
 
@@ -41,7 +41,7 @@ public class AccesBD {
 	}
 	
 	/**
-	 * Méthode qui retourne un objet de type Connection
+	 * Mï¿½thode qui retourne un objet de type Connection
 	 * @return Connection
 	 */
 	public synchronized static Connection getConnection(){
@@ -52,14 +52,14 @@ public class AccesBD {
 		catch (Exception e) {
 			
 				System.out.println(e);
-				JOptionPane.showMessageDialog(null,e.getMessage(),"Connexion à MySQL",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null,e.getMessage(),"Connexion ï¿½ MySQL",JOptionPane.WARNING_MESSAGE);
 				
 			} return connexion;
 	}
 	
 
 	/**
-	 * méthode de fermeture d'un objet de type connection
+	 * mï¿½thode de fermeture d'un objet de type connection
 	 */
 	
 	public static void fermerConnection(Connection connexion)
@@ -80,7 +80,7 @@ public class AccesBD {
 	}
 
 	/**
-	 * méthode de fermeture d'un objet de type connection
+	 * mï¿½thode de fermeture d'un objet de type connection
 	 */
 	public static void fermerConnection()
 	{
@@ -154,7 +154,7 @@ public class AccesBD {
 		return utilisateur;
 	}
 	/**
-	 *	méthode d'exécution d'une requête (SELECT) pour renvoyer un objet de type ResultSet
+	 *	mï¿½thode d'exï¿½cution d'une requï¿½te (SELECT) pour renvoyer un objet de type ResultSet
 	 *	@param requete String
 	 *	@return resultat ResultSet
 	 */
@@ -162,11 +162,11 @@ public class AccesBD {
 
 	{
 		/*
-		 * 	On déclare un objet de type Statement que l'on nomme instruction. Cet
-		 * 	objet soumet la requête à la base de données dans MySQL.
-		 * 	On déclare un objet de type ResultSet que l'on nomme resultat. cet objet
-		 * 	est retourné pour encapsuler les résultats de la requête. Il va nous permettre
-		 * 	de manipuler les résultats de la requête.
+		 * 	On dï¿½clare un objet de type Statement que l'on nomme instruction. Cet
+		 * 	objet soumet la requï¿½te ï¿½ la base de donnï¿½es dans MySQL.
+		 * 	On dï¿½clare un objet de type ResultSet que l'on nomme resultat. cet objet
+		 * 	est retournï¿½ pour encapsuler les rï¿½sultats de la requï¿½te. Il va nous permettre
+		 * 	de manipuler les rï¿½sultats de la requï¿½te.
 		 *
 		 */
 		Statement statement = null;
@@ -182,31 +182,31 @@ public class AccesBD {
 			 *
 			 *
 			 * TYPE_SCROLL_INSENSITIVE :
-			 * Cette valeur indique que le curseur peut être déplacé dans les deux sens,
-			 * mais aussi arbitrairement (de manière absolue ou relative).
+			 * Cette valeur indique que le curseur peut ï¿½tre dï¿½placï¿½ dans les deux sens,
+			 * mais aussi arbitrairement (de maniï¿½re absolue ou relative).
 			 * Le terme insensitive indique que le ResultSet est insensible aux modifications
-			 * des valeurs dans la base de données. Cela définit en fait une vue statique des données
+			 * des valeurs dans la base de donnï¿½es. Cela dï¿½finit en fait une vue statique des donnï¿½es
 			 * contenues dans le ResultSet.
 			 *
 			 * CONCUR_UPDATABLE :
-			 * Cette valeur indique que l'on peut modifier les données de la base via le ResultSet.
+			 * Cette valeur indique que l'on peut modifier les donnï¿½es de la base via le ResultSet.
 			 */
 
 			int type = ResultSet.TYPE_SCROLL_SENSITIVE;
 			int mode = ResultSet.CONCUR_UPDATABLE;
 
 			/* 	On peut traduire Statement par ordre ou instruction.
-			 * 	La méthode createStatement() nous retourne un objet de type Statement.
-			 * 	Nous l'avons appelé avec la méthode getConnection() qui nous renvoie
+			 * 	La mï¿½thode createStatement() nous retourne un objet de type Statement.
+			 * 	Nous l'avons appelï¿½ avec la mï¿½thode getConnection() qui nous renvoie
 			 * 	un objet de type Connexion.
-			 * 	Dès lors, nous pouvons utiliser l'objet instruction pour interroger
-			 * 	la base de données Oracle.
+			 * 	Dï¿½s lors, nous pouvons utiliser l'objet instruction pour interroger
+			 * 	la base de donnï¿½es Oracle.
 			 *
 			 */
 			statement = getConnection().createStatement(type,mode);
-			/*	Pour cela, il nous suffit d'appeler la méthode executeQuery() en lui passant
-			 * 	comme paramètre, la requete que nous voulons exécuter.
-			 * 	L'objet resultat contient le résultat de l'exécution de la requête.
+			/*	Pour cela, il nous suffit d'appeler la mï¿½thode executeQuery() en lui passant
+			 * 	comme paramï¿½tre, la requete que nous voulons exï¿½cuter.
+			 * 	L'objet resultat contient le rï¿½sultat de l'exï¿½cution de la requï¿½te.
 			 */
 
 			resultat = statement.executeQuery(requete);
@@ -225,7 +225,7 @@ public class AccesBD {
 	}
 
 	/**
-	 *	Méthode d'exécution d'une requete Update (UPDATE, INSERT, DELETE). Elle ne renvoie rien
+	 *	Mï¿½thode d'exï¿½cution d'une requete Update (UPDATE, INSERT, DELETE). Elle ne renvoie rien
 	 *	@param requete String
 	 */
 	public static void executerUpdate(String requete) throws ClassNotFoundException, SQLException
@@ -239,14 +239,14 @@ public class AccesBD {
 			int i = statement.executeUpdate(requete);
 
 
-			if (i==1) // on affiche un message d'information sur l'opération pour le plaisir !
+			if (i==1) // on affiche un message d'information sur l'opï¿½ration pour le plaisir !
 
 			{
-				//JOptionPane.showMessageDialog(null, "L'opération a réussie !");
+				//JOptionPane.showMessageDialog(null, "L'opï¿½ration a rï¿½ussie !");
 			}
 			else
 			{
-				//JOptionPane.showMessageDialog(null, "L'opération a échoué !");
+				//JOptionPane.showMessageDialog(null, "L'opï¿½ration a ï¿½chouï¿½ !");
 			}
 
 		}
@@ -262,7 +262,7 @@ public class AccesBD {
 	
 	
 	/**
-	 * méthode de fermeture d'un objet de type Statement
+	 * mï¿½thode de fermeture d'un objet de type Statement
 	 */
 
 	public static void fermerStatement(Statement statement)
@@ -283,7 +283,7 @@ public class AccesBD {
 	}
 
 	/**
-	 * méthode de fermeture d'un objet de type Statement
+	 * mï¿½thode de fermeture d'un objet de type Statement
 	 */
 
 	public static void fermerResultSet(ResultSet resultSet)
@@ -305,7 +305,7 @@ public class AccesBD {
 	
 
 	/**
-	 *  test avec méthode main()
+	 *  test avec mï¿½thode main()
 	*/
 	
 	public static void main(String[] args)
@@ -313,11 +313,11 @@ public class AccesBD {
 		Connection connnect = AccesBD.getConnection();
 		if (connnect!=null)
 		{
-			JOptionPane.showMessageDialog(null, "ça marche");
+			JOptionPane.showMessageDialog(null, "ï¿½a marche");
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "ça marche PAS !");
+			JOptionPane.showMessageDialog(null, "ï¿½a marche PAS !");
 		}
 
 	}
